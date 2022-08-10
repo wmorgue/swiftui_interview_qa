@@ -52,8 +52,67 @@ let nick = Person(givenName: "Nick") // nick.givenName это "Nick"
 > ⚠️ Протокол не содержит реализаций (implementation) свойств и методов. Проперти не содержит данных, а тело метода пустое. Тип, который наследуется от протокола, должен реализовывать все проперти и методы, которые присутствуют в данном протоколе.
 
 
-<!-- 4. Что такое Tuples (тупл, кортёж) ? -->
+4. Что такое Tuples (тупл, кортёж) ?
 
+Список типов, который разделен запятыми и заключен в круглые скобки.
+
+```swift
+let coordinates: (Int, Int) = (2, 3)
+
+var someTuple = (top: 10, bottom: 12)  // someTuple is of type (top: Int, bottom: Int)
+someTuple = (top: 4, bottom: 42) // OK: names match
+someTuple = (9, 99)              // OK: names are inferred
+someTuple = (left: 5, right: 5)  // Error: names don't match
+```
+
+5. Что такое Optional ? (опциональное значение)
+
+Тип данных, который предоставляет обернутое значение или `nil` | `.none`, отсутсвие значения. Иными словами, значение может быть или не может. Можно записать как `Optional<Int>`, но предпочтительна более коротка форма `Int?`:
+
+```swift
+let shortForm: Int? = Int("42")
+let longForm: Optional<Int> = Int("42")
+
+let number: Int? = Optional.some(42)
+let noNumber: Int? = Optional.none
+print(noNumber == nil) // true
+```
+
+Развернуть (получить) значение можно с помощью:
+- `Optional Binding` (if let, guard let, switch)
+
+```swift
+if let starPath = imagePaths["star"] {
+    print("The star image is at '\(starPath)'")
+} else {
+    print("Couldn't find the star image")
+}
+```
+
+- `Optional Chaining` используя опциональный постфикс оператор (postfix ?)
+
+```swift
+if imagePaths["star"]?.hasSuffix(".png") == true {
+    print("The star image is in PNG format")
+}
+```
+
+- `Nil-Coalescing Operator ??`, предоставляя дефолтное значение
+
+```swift
+let defaultImagePath = "/images/default.png"
+let heartPath = imagePaths["heart"] ?? defaultImagePath
+print(heartPath)
+```
+
+- `Unconditional (Force) Unwrapping !`
+
+```swift
+let number = Int("42")!
+print(number)
+```
+
+> ⚠️ Принудительная развертка инстанса со значением `nil` приведет к `runtime error`.
 
 
 <!-- Link's section  -->
