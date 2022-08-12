@@ -1,0 +1,15 @@
+name: Search typos
+on: [pull_request]
+
+jobs:
+  yaspeller:
+    runs-on: ubuntu-latest
+    name: Check spelling at PR
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - run: npm install -g yaspeller
+      - run: yaspeller /src
