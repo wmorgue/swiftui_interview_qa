@@ -1,0 +1,13 @@
+{
+  "lang": "ru",
+  "format": "markdown",
+  "ignoreUrls": true,
+  "fileExtensions": [
+    ".md"
+  ],
+  "dictionary": [
+    "проперти",
+    "тупл",
+    "дефолт(ное|ный|ная|ный)"
+  ]
+}
