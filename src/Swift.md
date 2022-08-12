@@ -141,6 +141,63 @@ print(githubUser)
 `self` указывает на значение, которое оно содержит.
 
 
+8. Что такое lazy? Ленивое свойство хранения и когда оно используется?
+
+Ленивое свойство хранения - свойство, начальное значение которого не вычисляется до первого использования. Индикатор ленивого свойства - ключевое слово `lazy`.
+
+> ⚠️ Всегда объявляйте свойства ленивого хранения как переменные `var`, потому что ее значение может быть не получено до окончания инициализации.
+
+
+9. Что такое defer?
+
+Оператор `defer` — это блок кода, который будет выполнятся в случае выхода из текущей области видимости.
+
+10. Преимущества использовать guard statement?
+
+Два основных преимущества использовать `guard`:
+
+1. Избежать пирамиду судьбы (pyramid of doom). Множество вложенных `if let`, уходящих в глубину.
+2. Оператор предоставляет ранний выход из функции с помощью `return`.
+
+
+11. Что такое вариативный (variadic) параметр?
+
+Вариативный параметр в функции принимает 0 или несколько значений определенного типа:
+
+```swift
+
+// Variadic parameter can be used any number of arguments(here voucherValues)
+func redeemVouchers(_ greetings: String, voucherValues: Int...) -> String {
+  let voucherText = voucherValues.count > 0 ? " You have redeemed " + "\(voucherValues.reduce(0, +)) €" : ""
+  return greetings + voucherText
+}
+// No variadic parameter
+redeemVouchers("Congratulation!")
+// "Congratulation!"
+// Multiple variadic parameter
+redeemVouchers("Congratulation!", voucherValues: 12, 23, 10)
+// "Congratulation! You have redeemed 45 €"
+// Single variadic parameter
+redeemVouchers("Congratulation!", voucherValues: 10)
+// "Congratulation! You have redeemed 10 €"
+```
+
+Параметр объявляется с тремя точками `...`. Вызывая функцию, ты можешь не передавать значение второму аргументу или передать несколько.
+
+12. Ключевое слово `final` перед `class`?
+
+Добавляя ключевое слово `final` классу/членами класса, мы ограничиваем класс/метод/свойство на переопределение(overridden). Так же мы не можем наследоваться от этого класса:
+
+```swift
+final class MyClass {
+  final var myVar: String = ""
+  final func myMethod() -> Optional<Any> { nil }
+  final var myComputedProperty: Int { .zero }
+}
+```
+
+
+
 <!-- Link's section  -->
 [type_inference]: https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html#ID322
 [generics]: https://docs.swift.org/swift-book/LanguageGuide/Generics.html
