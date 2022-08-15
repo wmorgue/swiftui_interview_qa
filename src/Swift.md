@@ -209,8 +209,91 @@ final class MyClass {
 
 Основное различие между двойным `=` и тройным `=` операторами в том, что оператор сравнения `==` сравнивает типы значений, чтобы проверить одинаковы ли они, а  `===` оператор сравнивает ссылочные типы, чтобы проверить, указывают ли ссылки на тот же инстанс.
 
+## В чём разница между Thread и Task?
+
+У процессора есть [регистры][processor_register], которые, по сути, являются его «локальными переменными». Все, что процессор хочет обработать, он загружает из памяти (RAM) в регистры, выполняет операции, а затем возвращает обратно в память. Один из регистров называется «[Счетчик команд][instruct_pointer]» (счетчик программ, на англ. Instruction Pointer/Program counter), который указывает, какую инструкцию нужно выполнять следующей. Существует фиксированное кол-во регистров, а «локальных переменных» может быть неограниченное кол-во, поэтому для хранения «локальных переменных», которые в данный момент не находятся в регистре, существует специальная область памяти под названием Stack (стэк).
+
+Thread (поток) это:
+
+- Состояние всех регистров
+- Stack (стэк)
+- Указатель, по которому ОС (в частности планировщик ядра) может следить за ним
+- Метаданные и дополнительные сведения о состоянии (приоритет и т.д.)
+
+
+Если у вас больше одного потока (многопоточная програма), то у вас более одного счетчика команд, более одного набора регистров и более одного стэка. Это все, что нужно для работы одного процессора (ядра процессора, что почти одно и тоже).
+Каждая программа имеет как минимум один поток. Выполняя 2-е программы одновременно, вы используете 2-а ядра процессора, так же как и одна программа, но с двумя потоками.
+
+Многозадачная операционная система, коими являются большинство современных ОС, будет переключать потоки через частые интервалы времени. Это позволяет произвольному кол-ву программ или потоков работать на произвольном кол-ве ядер/процессоров. Существуют 2-а способа переключаться:
+
+1. Поток может сообщить ОС: «я закончил, пусть работает что-то другое»
+2. ОС может сообщить: «некий квант времени истек, теперь очередь чего-то другого»
+
+Способы выше называются [кооперативной и вытесняющей][multitasking] многозадачностью соответственно. Все современные операционные системы, ориентированные на потребителя, в основном используют вытесняющую многозадачность, потому что в противном случае, программа, которая ведет себя «плохо», может помешать выполнению других программ, не сообщив о своем завершении.
+
+**Но!** Вытесняющая многозадачность имеет некоторые существенные недостатки/затраты:
+
+1. Переключение между потоками требует сохранения всех регистров текущего потока в память, а затем выгрузки из памяти, что приводит к затратам по времени
+2. Хранение всей информации о потоке занимает память
+3. Ядру ОС для отслеживания потоков требуется дополнительная память
+
+Ответ на вопрос:
+
+Swift Concurrency использует смешенную (гибридную) модель: существую легковесные «потокоподобные» Tasks, о которых ядро ничего не знает, а библиотека Concurrency выполняет свою собственную кооперативную многозадачность, чтобы решить, какие из них будут выполняться на небольшой горстке "настоящих" потоков с поддержкой ядра. Каждый раз, когда вы ожидаете вызов `await`, вы даете системе кооперативной многозадачности шанс сообщить: «ок, теперь очередь другого», т.е. вы отказываетесь от текущего потока. В литературе такую потоковую модель называют "[M:N][hybrid_model]". В модели M:N некоторое число M прикладных потоков выполнения отображаются на некоторое число N сущностей ядра или «виртуальных процессоров».
+
+В лучшем случае, раньше требовалось много настоящих (затратных) потоков, каждый из которых выполнялся в течении короткого времени, то теперь требуется небольшое число настоящих потоков, которые выполняются столько, сколько позволяется ядро, минимизируя затраты памяти и затраты на переключения.
+
+## Почему мы не может объявить open struct?
+
+Потому что наследование между структурами не возможно. `open` означает, что вы можете переопределить родительский метод/проперти данного класса вне модуля.
+
+## В чём разница между fileprivate, private и public private(set) уровнями доступа?
+
+`fileprivate` доступен в пределах текущего файла. `private` доступен в пределах текущей структуры/класса/enum. `public private(set)` обозначает, что getter публичный, а setter приватный.
+
+## Что такое внутренний (internal) уровень доступа?
+
+Внутренний (internal) уровень доступа позволяет использовать свойства и методы внутри модуля, но не в любом исходном файле за пределами модуля. `internal` установлен по умолчанию и не требует явного объявления:
+
+```swift
+// записи равнозначны
+var number = 5
+internal var number = 5
+```
+
+<!--
+## В чём разница между Thread и Task?
+
+A processor has things called "registers", which are essentially its local variables. Anything it wants to operate on, it loads from memory (RAM) into registers, does the operations, and then stores them back to memory. One of those registers is the "program counter", which holds the location of the next instruction to run. Now, there's a fixed quantity of registers, while you're allowed to have unlimited local variables, so there's also a dedicated region of memory for storing local variables that aren't currently in registers, which is called "the stack" (it's a stack because each time you call a function its variables get added to the top, and each time you return from a function they get taken off the top).
+
+A thread is:
+- The state of all the registers
+- The stack
+- A pointer for the operating system (the kernel scheduler specifically) to keep track of it
+- A few odds and ends of metadata and extra state like priority and such
+
+If you have more than one thread (a "multithreaded program"), then you have more than one program counter, more than one set of registers, and more than one stack, i.e. everything you need for more than one processor (or more than one core of one processor, almost the same thing) to run simultaneously. Every program has at least one thread, so running two programs also lets you use two processors at once, just like a single program with two threads would.
+
+A multi-tasking operating system, which all modern consumer-focused ones are, will switch which thread is running at frequent intervals. This allows for arbitrarily many programs (or threads!) to run on arbitrarily few processors/cores. There are two ways to decide when to switch: a thread can voluntarily tell the system "I'm done for now, let something else run", or the system can just say "time's up, it's someone else's turn". These are called cooperative multitasking, and preemptive multitasking, respectively. All modern consumer-focused operating systems are primarily preemptively multitasking, because otherwise a badly behaved program can prevent other stuff from running by just not saying it's done.
+
+But.
+
+Preemptive multitasking with threads has some significant costs. In particular:
+
+- Switching threads requires saving all the registers from the current thread into memory, and then loading all the registers from the new thread from memory, which takes time
+- Storing all the information for a thread takes up memory
+- Having the operating system (kernel) keep track of the threads requires more memory
+
+So Swift Concurrency uses a hybrid model: it has light weight "thread-like" Tasks that the kernel knows nothing about, and the Concurrency library does its own cooperative multitasking to decide which of those get to run on a small handful of "real" kernel-aware threads. Every time you await something, you're giving the cooperative multitasking system a chance to say "ok it's someone else's turn", i.e. you're giving up your actual thread. Sometimes in the literature this is called an "M:N" threading model: M program threads are mapped onto N kernel threads, where M > N.
+In the best case scenario this means that what previously would have required many many (expensive) real threads, each running for a short period of time, now requires only a tiny number of real threads, and they all run for as long as the kernel will let them, minimizing both memory overhead and switching costs.
+ -->
+
 
 <!-- Link's section  -->
 [type_inference]: https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html#ID322
 [generics]: https://docs.swift.org/swift-book/LanguageGuide/Generics.html
 [protocols]: https://docs.swift.org/swift-book/LanguageGuide/Protocols.html
+[processor_register]: https://ru.wikipedia.org/wiki/Регистр_процессора
+[instruct_pointer]: https://ru.wikipedia.org/wiki/Счётчик_команд
+[multitasking]: https://ru.wikipedia.org/wiki/Многозадачность#Совместная_или_кооперативная_многозадачность
+[hybrid_model]: https://ru.wikipedia.org/wiki/Поток_выполнения#M:N_(смешанная_потоковость)
