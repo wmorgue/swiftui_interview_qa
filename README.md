@@ -4,6 +4,6 @@
 
 1. [Общие вопросы](src/Swift.md)
 2. [SwiftUI](src/SwiftUI.md)
-3. Threading & concurrency
+3. [Threading & concurrency](src/ThreadingConcurrency.md)
 4. Управление памятью
 5. Архитектура и паттерны проектирования
