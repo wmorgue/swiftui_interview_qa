@@ -1,5 +1,3 @@
-# Swift iOS Interview Questions & Answers
-
 ## Что такое вывод типов (type inference)?
 
 [Возможность компилятора][type_inference] самому логически вывести тип значения у выражения:
