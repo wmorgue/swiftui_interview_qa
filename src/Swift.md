@@ -240,7 +240,7 @@ final class MyClass {
 
 ## В чём разница между fileprivate, private и public private(set) уровнями доступа?
 
-`fileprivate` доступен в пределах текущего файла. `private` доступен в пределах текущей структуры/класса/enum. `public private(set)` обозначает, что getter публичный, а setter приватный.
+`fileprivate` доступен в пределах текущего файла. `private` доступен в пределах текущей типа, в котором был объявлен. `public private(set)` обозначает, что getter публичный, а setter приватный.
 
 ## Что такое внутренний (internal) уровень доступа?
 
