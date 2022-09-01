@@ -45,10 +45,11 @@ Strong references используется для описания связей 
 Утечка памяти происходит когда объект остается в памяти даже после того, как `lifecycle` завершился.
 Вам следует избегать отношений `strong - strong`, которые создают retain cycle, порождающий утечку памяти.
 
-<!-- ## Что такое capture list?
+## Что такое capture list?
 
-A capture list is the procedure to handle the references captured in it. By default, Everything will be strongly referenced when you don’t use capture list. Capture lists are defined with a weak or unowned keyword prefix. We need to define a capture variable as weak if it could become nil and the closure won’t be deallocated before then. We need to define a captured reference as unowned if it will never become nil before the closure is deallocated. -->
-
+`capture list` (список захвата) - процедура обработки «захваченных» ссылок. Если вы не используете `capture list`, то по умолчанию все выражения будут иметь `strong reference`. Для объявления `capture lists` используйте ключевое слово `weak` или `unowned`.
+1. `weak` захваченные выражения являются `Optional` и не удерживаются замыканием, таким образом, они могут быть освобождены и установлены в nil.
+2. Используем `unowned` если значение не будет `.none` до освобождения.
 
 ## Что такое circular dependencies?
 
