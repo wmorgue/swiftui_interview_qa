@@ -6,4 +6,4 @@
 2. [SwiftUI](src/SwiftUI.md)
 3. [Threading & concurrency](src/ThreadingConcurrency.md)
 4. [Управление памятью](src/MemoryManagement.md)
-5. Архитектура и паттерны проектирования
+5. [Архитектура и паттерны проектирования](src/ArchitecturalDesignPattern.md)
