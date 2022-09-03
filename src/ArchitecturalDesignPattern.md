@@ -21,7 +21,7 @@
 <details> 
   <summary>3. ViewModel</summary>
 
-  Обёртка данных из Модели, подлежащиx связыванию. То есть, она содержит Модель, преобразованную к Представлению, а также команды, которыми может пользоваться Представление, чтобы влиять на Модель.
+  Обёртка данных из модели, подлежащиx связыванию. То есть, ViewModel содержит Model, преобразованную к View, а также команды, которыми может пользоваться View, чтобы влиять на Model.
 </details> 
 
 ## Расскажите об Singleton pattern
@@ -40,5 +40,11 @@ let userDefaults = UserDefaults.standart
 class AsyncLocalNotifications {
   private init() {}
   static let instance = Self()
+}
+
+// применимо к структурам
+struct Settings {
+  private init() {}
+  static let shared = Self()
 }
 ```
