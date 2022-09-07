@@ -114,16 +114,16 @@ print(MemoryLayout<P>.size) // 40
 ```
 
 Обычный экзистенциальный контейнер по умолчанию содержит:
-- Буффер на три машинных слова для хранимого значения. Имеем на x64: 8 + 8 + 8 = 24
+- Буфер на три машинных слова для хранимого значения. Имеем на x64: 8 + 8 + 8 = 24
 - Ссылка на Метатип — ещё 8
-- Сслыка на массив таблиц `Protocol Witness Table` - cнова 8
+- Ссылка на массив таблиц `Protocol Witness Table` - снова 8
 Итого: 24 + 8 + 8 = 40
 
 ```swift
 print(MemoryLayout<Sendable>.size) // 32
 ```
 
-`Sendable` это маркер протокол, а значит он не содержит сслыки на массив таблиц Protocol Witness Table.
+`Sendable` это маркер протокол, а значит он не содержит ссылки на массив таблиц Protocol Witness Table.
 Итого: 40 - 8 = 32
 
 ```swift
@@ -132,7 +132,7 @@ print(MemoryLayout<AnyObject>.size) // 8
 
 `AnyObject` - это специальный вид экзистенциального контейнера `Class Existential Containers`:
 - Содержит указатель на память в хипе - это 8
-- Нет сслыки на массив таблиц Protocol Witness Table
+- Нет ссылки на массив таблиц Protocol Witness Table
 Итого: 8
 
 
@@ -142,7 +142,7 @@ print(MemoryLayout<Actor>.size) // 16
 
 `Actor` наследуется от `AnyObject`, а значит Class Existential Containers:
 - Содержит указатель на память в куче - это 8
-- Есть сслыка на массив таблиц Protocol Witness Table - ещё 8 
+- Есть ссылка на массив таблиц Protocol Witness Table - ещё 8 
 Итого: 8 + 8 = 16
 
 [memory_layout]: https://developer.apple.com/documentation/swift/memorylayout
