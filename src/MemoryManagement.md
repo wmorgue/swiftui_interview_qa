@@ -62,3 +62,87 @@ Strong references используется для описания связей 
 Основным преимуществом `ARC` является детерминированное поведение и предсказуемая деконструкция. Объекты освобождаются немедленно, когда они больше не нужны.
 
 Однако `ARC` не может работать с reference cycle без вмешательства разработчика. С другой стороны, основным преимуществом сборщика мусора заключается в обнаружении reference cycle.
+
+## Что такое MemoryLayout и как посчитать размер протокола?
+
+`MemoryLayout` - `enum`, с помощью которого можно [узнать информацию о размере][memory_layout], выравнивании и шаге какого-либо типа данных:
+
+```swift
+@frozen
+public enum MemoryLayout<T> {
+  /// The contiguous memory footprint of `T`, in bytes.
+  ///
+  /// A type's size does not include any dynamically allocated or out of line
+  /// storage. In particular, `MemoryLayout<T>.size`, when `T` is a class
+  /// type, is the same regardless of how many stored properties `T` has.
+  ///
+  /// When allocating memory for multiple instances of `T` using an unsafe
+  /// pointer, use a multiple of the type's stride instead of its size.
+  @_transparent
+  public static var size: Int {
+    return Int(Builtin.sizeof(T.self))
+  }
+
+  /// The number of bytes from the start of one instance of `T` to the start of
+  /// the next when stored in contiguous memory or in an `Array<T>`.
+  ///
+  /// This is the same as the number of bytes moved when an `UnsafePointer<T>`
+  /// instance is incremented. `T` may have a lower minimal alignment that
+  /// trades runtime performance for space efficiency. This value is always
+  /// positive.
+  @_transparent
+  public static var stride: Int {
+    return Int(Builtin.strideof(T.self))
+  }
+
+  /// The default memory alignment of `T`, in bytes.
+  ///
+  /// Use the `alignment` property for a type when allocating memory using an
+  /// unsafe pointer. This value is always positive.
+  @_transparent
+  public static var alignment: Int {
+    return Int(Builtin.alignof(T.self))
+  }
+}
+```
+
+Рассмотрим пустой протокол `P`:
+
+```swift
+protocol P { }
+print(MemoryLayout<P>.size) // 40
+```
+
+Обычный экзистенциальный контейнер по умолчанию содержит:
+- Буффер на три машинных слова для хранимого значения. Имеем на x64: 8 + 8 + 8 = 24
+- Ссылка на Метатип — ещё 8
+- Сслыка на массив таблиц `Protocol Witness Table` - cнова 8
+Итого: 24 + 8 + 8 = 40
+
+```swift
+print(MemoryLayout<Sendable>.size) // 32
+```
+
+`Sendable` это маркер протокол, а значит он не содержит сслыки на массив таблиц Protocol Witness Table.
+Итого: 40 - 8 = 32
+
+```swift
+print(MemoryLayout<AnyObject>.size) // 8
+```
+
+`AnyObject` - это специальный вид экзистенциального контейнера `Class Existential Containers`:
+- Содержит указатель на память в хипе - это 8
+- Нет сслыки на массив таблиц Protocol Witness Table
+Итого: 8
+
+
+```swift
+print(MemoryLayout<Actor>.size) // 16
+```
+
+`Actor` наследуется от `AnyObject`, а значит Class Existential Containers:
+- Содержит указатель на память в куче - это 8
+- Есть сслыка на массив таблиц Protocol Witness Table - ещё 8 
+Итого: 8 + 8 = 16
+
+[memory_layout]: https://developer.apple.com/documentation/swift/memorylayout
