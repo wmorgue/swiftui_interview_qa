@@ -88,6 +88,14 @@ actor — reference type, который защищает доступ к изм
 3. Может общаться с другими участниками только асинхронно (через их адреса).
 4. Может создавать других дочерних акторов (в данном случае нас это не особо волнует).
 
+## Расскажите о ключевом слове await
+
+`await` — это специальная пометка, которая говорит о том, что в этом месте может быть `suspension point`.
+
+`Suspension points`(точки приостановки) – динамическая концепция всей программы, которая гласит: существуют места, которые могут фактически приостанавливать выполнение задачи и оставить поток.
+
+`Potential suspension points` - are the static, conservative, function-local view of suspension points: they're the points in the function where a suspension could potentially occur and therefore the function ought to be prepared to abandon the thread. Any dynamic suspension point is always "inside" a potential suspension point from the perspective of every async function on that task: all of the outer functions must be awaiting an asynchronous call, and the innermost function must be awaiting at the actual dynamic suspension point. From all of those functions' local perspectives, the exact reason for the suspension (which may be N levels of call deep) is much less important than the fact that a suspension is possible at that point in their execution.
+
 <!-- ## В чём разница между Thread и Task?
 
 У процессора есть [регистры][processor_register], которые, по сути, являются его «локальными переменными». Все, что процессор хочет обработать, он загружает из памяти (RAM) в регистры, выполняет операции, а затем возвращает обратно в память. Один из регистров называется «[Счетчик команд][instruct_pointer]» (счетчик программ, на англ. Instruction Pointer/Program counter), который указывает, какую инструкцию нужно выполнять следующей. Существует фиксированное кол-во регистров, а «локальных переменных» может быть неограниченное кол-во, поэтому для хранения «локальных переменных», которые в данный момент не находятся в регистре, существует специальная область памяти под названием Stack (стек).
