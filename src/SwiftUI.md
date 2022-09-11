@@ -18,6 +18,50 @@ SwiftUI использует декларативный синтаксис, по
 
 Применив модификатор к вью, добавляется определенное поведение, которое вы ожидаете и возвращается новая вью.
 
+## Какие категории View вы знаете?
+
+`Lazy` вью, как `List` подгружают элементы UI, когда они находятся или будут находиться внутри области прокрутки.
+Таким образом, не все данные из вью хранятся в текущей вью. Попробуем назвать элементы UI, которые генерируются во вью, `displayables`. Вью `SwiftUI` может иметь `0` или `> 0` `dispayables`.
+
+Когда дело доходит до сравнения, можем выделить 4-ре основных категории:
+
+1. `Unary`: Вью с единственным displayable, таким как shapes, colors, controls и labels.
+2. `Structural`: Вью которая принимает `0` или `> 0` и комбинирует их в некоторое подмножество: `ForEach`, `EmptyView` и вью которые строятся с `ViewBuilder`, такие как `TupleView` и `_ConditionalView`.
+3. `Container`: Вью, которые принимают другие вью и управляют их расположением: `HStack`, `VStack`, `List`, `LazyVStack`.
+4. `Modifiers`: Вью, которое добавляет и изменяет внешний вид и/или поведение.
+
+<!-- Examples: the views that modifiers such as .border, .padding, .frame generate, which are of type ModifiedContent.
+You can find the types of the structural views that view builders create in the documentation. (As a recap: Multiple statements are combined into a TupleView. if-statements without else create an optional views, which are views themselves. if-statements with else become _ConditionalViews.) -->
+
+<!-- Container views take the displayables of the view they wrap and put them on screen. I will call a displayable that is rendered a graphic. HStack and VStack always make graphics for all the displayables in a view and lay them out. Other containers, such as List are lazy and do not immediately turn all displayables into graphics. Container views present themselves as views with a single displayable again to views higher up in the hierarchy. -->
+
+<!-- Modifiers applied to views create ModifiedContent views. Modifiers apply an effect to all the displayables of another view individually. A .border modifier used on a TupleView will put a border graphic on top of all the displayables of the TupleView. This means modifiers can have displayables that are put on screen multiple times, so a single displayable is turned into multiple graphics. -->
+
+Каждая иерархия View содержит примитивные View, и каждое примитивное View будет представлять собой комбинацию типов View перечисленных выше:
+
+```swift
+struct MyView: View {
+  @State var showSecret = false
+
+  var body: some View {
+    VStack {
+      Group {
+        Button("Show secret") { showSecret.toggle() }
+        if showSecret {
+          Text("Secret")
+        } else {
+          Color.red
+        }
+      }
+      .padding()
+    }
+  }
+}
+```
+
+SwiftUI необходимо отслеживать иерархию вью в `runtime`. Ниже схематично изображена `MyView()`, которая хранит ссылки и состояние вью.
+
+![View graph](https://rensbr.eu/blog/swiftui-diffing/view_graph.svg)
 
 ## Что такое ViewModifier?
 
