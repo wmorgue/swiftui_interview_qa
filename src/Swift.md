@@ -65,6 +65,16 @@ someTuple = (left: 5, right: 5)  // Error: names don't match
 
 ## Что такое Optional? (опциональное значение)
 
+Перечисление `Optional<Wrapped>` c двумя кейсами: `.some(Wrapped)` и `.none`:
+
+```swift
+@frozen
+public enum Optional<Wrapped>: ExpressibleByNilLiteral {
+  case none
+  case some(Wrapped)
+}
+```
+
 Тип данных, который предоставляет обернутое значение или `nil` | `.none`, отсутствие значения. Иными словами, значение может быть или не может. Можно записать как `Optional<Int>`, но предпочтительна более коротка форма `Int?`:
 
 ```swift
