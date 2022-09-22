@@ -117,6 +117,7 @@ print(heartPath)
 
 ```swift
 let number = Int("42")!
+// или c помощью проперти let number = Int("42").unsafelyUnwrapped
 print(number)
 ```
 
@@ -271,8 +272,9 @@ internal var number = 5
 
 ## Объясните разницу между структурой и классом в Swift?
 
-`struct` — value type. `class` — reference type.
-При копировании структуры вы получаете 2 уникальных инстанса данных. При копировании класса вы получаете 2 ссылки на один инстанс данных.
+`struct` — value type. Копируются. Изменение одного инстанса не влияет на второй.
+
+`class` — reference type. Передаются по ссылке. Изменение одного инстанса влечет за собой изменение второго.
 
 ## Что такое value/refrence type в Swift?
 
