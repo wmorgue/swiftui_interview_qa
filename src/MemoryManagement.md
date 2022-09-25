@@ -96,13 +96,15 @@ currentAddress(secondArr) // 5388689776
 
 Виды диспетчеризации:
 
+```mermaid
 graph TD
     A[Method Dispatch] -->B(Direct)
     A --> C(Table)
     A --> D(Message)
     C --> F(Virtual-table)
     C --> S(Witness-table)
-    
+```
+
 1. `Direct`
 
 - [x] Самый быстрый тип диспетчеризации
@@ -121,6 +123,13 @@ graph TD
 - [x] Реализует полиморфизм
 - [x] Реализует наследование
 
+4. `Message`
+
+- [x] `KVC` / `KVO`
+- [x] Method swizzling
+- [ ] Самый медленный
+
+> ⚠️ Message используется только для совместимости с Obc-C runtime (NextStep классы)
 
 
 ## В чем разница между garbage collector и ARC?
