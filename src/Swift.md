@@ -56,7 +56,7 @@ let nick = Person(givenName: "Nick") // nick.givenName это "Nick"
 
 ## Что такое Tuples (тупл, кортёж)?
 
-Список типов, который разделен запятыми и заключен в круглые скобки.
+Объект, который группирует значения различных типов в пределах одного составного значения.
 
 ```swift
 let coordinates: (Int, Int) = (2, 3)
@@ -66,6 +66,8 @@ someTuple = (top: 4, bottom: 42) // OK: names match
 someTuple = (9, 99)              // OK: names are inferred
 someTuple = (left: 5, right: 5)  // Error: names don't match
 ```
+
+> Типом данных тупла является фиксированная упорядоченная последовательность имен типов данных элементов тупла.
 
 ## Что такое Optional? (опциональное значение)
 
