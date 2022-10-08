@@ -10,6 +10,30 @@ let myStr = "Hello, World!"
 let myStr: String = "Hello, World!"
 ```
 
+## Для чего используется ключевое слово fallthrough?
+
+С помощью ключевого слова `fallthrough` можно изменить логику функциониро- вания оператора switch и не прерывать его работу после выполнения кода в case- блоке. Данное ключевое слово позволяет перейти к телу последующего case-блока:
+
+```swift
+let lvl: Character = "B"
+
+switch lvl {
+case "A":
+    print("First case is A")
+    fallthrough
+case "B":
+    print("Second case is B")
+    fallthrough
+case "C":
+    print("Last one is C")
+default:
+    break
+}
+
+// Second case is B
+// Last one is C
+```
+
 ## В чем разница между Int и UInt?
 
 Разница между знаковыми и беззнаковыми целочисленными типами в том, что значение знакового типа данных может находиться в интервале от `–2^n–2` до `+2^n–2`, а беззнакового — от `0` до `+2^n–1`, где n — разрядность типа данных (8, 16, 32 или 64).
