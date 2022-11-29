@@ -13,13 +13,13 @@ print(_SwiftStdlibVersion.current)
 Для того, чтобы вывести имя типа по средствам языка Swift, вначале получим мангленный символ:
 
 ```swift
-func get_type_by_name<T>(_ t: T.Type) -> (any Any.Type)? {
+func get_type_by_name<T>(_ t: T.Type) -> Any.Type? {
   let mangledType: String? = _mangledTypeName(t)
   
   guard mangledType != nil else {
     return nil
   }
-  let typeName: (any Any.Type)? = _typeByName(mangledType!)
+  let typeName: Any.Type? = _typeByName(mangledType!)
 
   return typeName
 }
