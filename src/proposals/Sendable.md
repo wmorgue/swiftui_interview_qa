@@ -307,9 +307,9 @@ var suffix: String = ...
 strings.parallelMap { [suffix] in prefix + $0 + suffix }
 ```
 
-Типы захваченных значений дожны соответствовать `Sendable`.
+Типы захваченных значений должны соответствовать `Sendable`.
 
-3. В настоящее время `get/set` не поддерживают `@Sendable`. Если будет спрос, то появится новое предложение по введению в такой функионал.
+3. В настоящее время `get/set` не поддерживают `@Sendable`. Если будет спрос, то появится новое предложение по введению в такой функционал.
 
 #### Inference of `@Sendable` for Closure Expressions
 
@@ -319,10 +319,10 @@ strings.parallelMap { [suffix] in prefix + $0 + suffix }
 1. используется в контексте `@Sendable` функции(`parallelMap` или `Task.runDetached`)
 2. `@Sendable` в замыкании `in`
 
-Различие между `@Sendable` и `@escaping` состоит в том, что по-умолчанию замыкание не является `@Sendable`, а является как раз `@escaping`:
+Различие между `@Sendable` и `@escaping` состоит в том, что по умолчанию замыкание не является `@Sendable`, а является как раз `@escaping`:
 
 ```swift
-// по-умолчанию это @escaping, а не @Sendable
+// по умолчанию это @escaping, а не @Sendable
 let fn = { (x: Int, y: Int) -> Int in x+y }
 ```
 
