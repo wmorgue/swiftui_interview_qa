@@ -8,6 +8,10 @@ print(_isStdlibDebugChecksEnabled())
 print(_isDebugAssertConfiguration())
 print(_isPowerOf2(4))
 print(_SwiftStdlibVersion.current)
+
+// Дебаг для SwiftUI вьюх
+// SO: https://stackoverflow.com/questions/69859370/where-is-self-printchanges-defined-and-or-documented-for-swiftui
+let _ = Self._printChanges()
 ```
 
 Для того, чтобы вывести имя типа по средствам языка Swift, вначале получим мангленный символ:
