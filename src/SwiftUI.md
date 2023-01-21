@@ -134,3 +134,10 @@ SwiftUI необходимо отслеживать иерархию вью в `
 </details>
 
 [environmentValues]: https://developer.apple.com/documentation/swiftui/environmentvalues
+
+
+## Перечислите все ленивые (lazy) контейнеры/вью?
+
+Называются ленивыми (`lazy`), потому что вью не создает все элементы сразу. Элементы выводятся на экран по мере необходимости.
+
+`List`, `LazyVStack`, `LazyHStack`, `LazyHGrid`, `LazyVGrid`, `Table`.
