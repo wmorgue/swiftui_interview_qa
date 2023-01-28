@@ -171,3 +171,24 @@ print(rectangle.height)
 </details>
 
 [environmentValues]: https://developer.apple.com/documentation/swiftui/environmentvalues
+
+
+## Назовите property wrapper, которые объявляют reference семантику?
+
+SwiftUI предоставляет property wrappers, которые объявляют reference type в качестве источника истины (source of truth): `@ObservedObject`, `@StateObject` и `@EnvironmentObject`.
+Для использования этих врапперов, необходимо чтобы класс стал наблюдаемым (observable).
+
+## Как сделать класс наблюдаемым?
+
+Для этого необходимо подписать класс на протокол `ObservableObject`. 
+Если мы хотим, чтобы проперти класса реагировало на изменения и обновляло вью, то нужно добавить атрибут `@Published`:
+
+```swift
+class Counter: ObservableObject {
+  @Published
+  var increase: Int = 1
+}
+```
+
+> ℹ️ `@Published` — это проперти враппер, но в контексте применения к свойствам класса — атрибут.
+
