@@ -542,6 +542,6 @@ func greeting(title: String) {
 
 
 <!-- Link's section  -->
-[type_inference]: https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html#ID322
-[generics]: https://docs.swift.org/swift-book/LanguageGuide/Generics.html
-[protocols]: https://docs.swift.org/swift-book/LanguageGuide/Protocols.html
+[type_inference]: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/#Type-Safety-and-Type-Inference
+[generics]: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/generics/
+[protocols]: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/protocols/
