@@ -178,6 +178,28 @@ print(rectangle.height)
 SwiftUI предоставляет property wrappers, которые объявляют reference type в качестве источника истины (source of truth): `@ObservedObject`, `@StateObject` и `@EnvironmentObject`.
 Для использования этих врапперов, необходимо чтобы класс стал наблюдаемым (observable).
 
+```mermaid
+flowchart TD
+    A(Reference семантика) --> B(Источник истины/Source of Truth?);
+    B --> State("@StateObject");
+    B --> Environment("@EnvironmentObject");
+    B --> Observed("@ObservedObject")
+```
+
+##  Назовите property wrapper, которые объявляют value семантику?
+
+Существует 2 враппера, которые является `value` типом: `@State` и `@Binding`.
+Из них только `@State` является источником истины (source of truth):
+
+```mermaid
+flowchart TD
+    A(Value семантика) --> B(Источник истины/Source of Truth?);
+    B --> Y(ДА);
+    B --> N(НЕТ);
+    Y --> S("@State")
+    N --> Bind("@Binding")
+```
+
 ## Как сделать класс наблюдаемым?
 
 Для этого необходимо подписать класс на протокол `ObservableObject`. 
