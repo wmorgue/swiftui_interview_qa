@@ -180,7 +180,7 @@ SwiftUI предоставляет property wrappers, которые объяв�
 
 ```mermaid
 flowchart TD
-    A(Reference семантика) --> B(Источник истины/Source of Truth?);
+    A(Reference семантика) --> B(Источник истины/Source of Truth);
     B --> State("@StateObject");
     B --> Environment("@EnvironmentObject");
     B --> Observed("@ObservedObject")
