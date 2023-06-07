@@ -105,7 +105,8 @@ print(rectangle.height)
 // Выведет "12"
 ```
 
-## Какие property wrapper вы знаете?
+## Какие property wrapper вы знаете (вопрос устарел с iOS 17)?
+
 
 На текущий момент в SwiftUI имеется более 17-ти оберток, каждая из которых предоставляет разный функционал:
 
@@ -173,6 +174,20 @@ print(rectangle.height)
 [environmentValues]: https://developer.apple.com/documentation/swiftui/environmentvalues
 
 
+## Какие property wrapper вы знаете (iOS 17)?
+
+Начиная с iOS 17, разработчикам предлагается использовать [новый подход для отслеживания изменений](https://developer.apple.com/documentation/observation).
+
+
+<details> 
+  <summary>@Bindable</summary>
+
+   `@Bindable`
+   [Документация](https://developer.apple.com/documentation/swiftui/bindable)
+</details>
+
+
+
 ## Назовите property wrapper, которые объявляют reference семантику?
 
 SwiftUI предоставляет property wrappers, которые объявляют reference type в качестве источника истины (source of truth): `@ObservedObject`, `@StateObject` и `@EnvironmentObject`.
@@ -200,12 +215,13 @@ flowchart TD
     N --> Bind("@Binding")
 ```
 
-## Как сделать класс наблюдаемым?
+## Как сделать класс наблюдаемым (вопрос устарел, до iOS 17)?
 
 Для этого необходимо подписать класс на протокол `ObservableObject`. 
 Если мы хотим, чтобы проперти класса реагировало на изменения и обновляло вью, то нужно добавить атрибут `@Published`:
 
 ```swift
+// старый подход
 class Counter: ObservableObject {
   @Published
   var increase: Int = 1
@@ -214,6 +230,18 @@ class Counter: ObservableObject {
 
 > ℹ️ `@Published` — это проперти враппер, но в контексте применения к свойствам класса — атрибут.
 
+## Как сделать класс наблюдаемым (начиная с iOS 17)?
+
+Начиная с iOS 17, разработчикам предлагается использовать новый макрос `@Observable`:
+
+```swift
+// новый подход
+@Observable class Counter {
+  var increase: Int = 1
+}
+```
+
+[Документация по макросу Observable](https://developer.apple.com/documentation/observation/observable-swift.macro)
 
 ## Состояние сцены и переход (Scene phases and transitions)
 
