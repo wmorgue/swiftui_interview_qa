@@ -8,6 +8,12 @@ print(_isStdlibDebugChecksEnabled())
 print(_isDebugAssertConfiguration())
 print(_isPowerOf2(4))
 print(_SwiftStdlibVersion.current)
+_log(2.0)
+
+// Retain count
+_getRetainCount()
+_getWeakRetainCount()
+_getUnownedRetainCount()
 
 // Дебаг для SwiftUI вьюх
 // SO: https://stackoverflow.com/questions/69859370/where-is-self-printchanges-defined-and-or-documented-for-swiftui
